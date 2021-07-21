@@ -45,19 +45,11 @@ export const PAGES: Routes = {
             route: 'responsive-table',
         },
     },
-    LOADING: {
-        title: 'Loading States',
-        route: 'loading-states',
-    },
     LOADING_WAITING_STATES: {
         title: 'Loading & Waiting',
-        PROGRESS_BAR: {
-            title: 'Progress Bars',
-            route: 'progress-bar',
-        },
-        PROGRESS_BAR_INDETERMINATE: {
-            title: 'Progress Bars (Indet.)',
-            route: 'progress-bar-indeterminate',
+        SPINNER_OVERLAYS: {
+            title: 'Spinner Overlays',
+            route: 'spinner-overlays',
         },
         CONTEXTUAL_SPINNER: {
             title: 'Contextual Spinner',
@@ -67,9 +59,13 @@ export const PAGES: Routes = {
             title: 'Skeletons',
             route: 'skeletons',
         },
-        SPINNER_OVERLAYS: {
-            title: 'Spinner Overlays',
-            route: 'spinner-overlays',
+        PROGRESS_BAR: {
+            title: 'Progress Bars',
+            route: 'progress-bar',
+        },
+        PROGRESS_BAR_INDETERMINATE: {
+            title: 'Progress Bars (Indet.)',
+            route: 'progress-bar-indeterminate',
         },
     },
     OVERLAYS: {
@@ -128,7 +124,6 @@ export type Routes = {
         STATUS_LIST: RouteMetaData;
         RESPONSIVE_TABLE: RouteMetaData;
     };
-    LOADING: RouteMetaData;
     LOADING_WAITING_STATES: RouteMetaData & {
         PROGRESS_BAR: RouteMetaData;
         PROGRESS_BAR_INDETERMINATE: RouteMetaData;

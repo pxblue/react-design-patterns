@@ -14,20 +14,22 @@ import {
     FormControl,
     List,
     Snackbar,
-    SnackbarContent,
 } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, Theme, createTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import * as PXBThemes from '@pxblue/react-themes';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Folder, Description, Publish } from '@material-ui/icons';
 import LinearProgress, { LinearProgressProps } from '@material-ui/core/LinearProgress';
 import { useDispatch } from 'react-redux';
 import { TOGGLE_DRAWER } from '../../../redux/actions';
 import * as Colors from '@pxblue/colors';
+import { InfoListItem } from '@pxblue/react-components';
 type FolderItem = {
     id: number;
     name: string;
     progress: number;
     status: string;
+    open: boolean;
 };
 const foldersList = [
     { label: 'The Best Dev Team', value: '1' },
@@ -57,13 +59,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     uploadButtonContainer: {
         textAlign: 'right',
         paddingBottom: `${theme.spacing(2)}px`,
-    },
-    closeButtonContainer: {
-        color: Colors.black[50],
-        borderColor: Colors.black[50],
-        [theme.breakpoints.up('sm')]: {
-            width: '80px',
-        },
     },
     formControl: {
         width: '100%',
@@ -104,29 +99,26 @@ const useStyles = makeStyles((theme: Theme) => ({
             width: '100%',
         },
     },
-    infoList: {
+    fileUploadItem: {
         marginBottom: theme.spacing(2),
         '&:last-child': {
             marginBottom: 0,
         },
     },
-    subTitle: {
-        color: Colors.black[200],
-    },
-    snackbar: {
+    snackbarRoot: {
         position: 'inherit',
         transform: 'none',
+        backgroundColor: Colors.black[900],
     },
-    SnackbarContent: {
-        borderRadius: 0,
-        padding: `0 ${theme.spacing(2)}px 0 ${theme.spacing(1)}px`,
-    },
-    messageContainer: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-    messageTextContainer: {
-        marginRight: `${theme.spacing(3)}px`,
+    bottomCenter: {
+        left: 0,
+        right: 0,
+        bottom: 0,
+        [theme.breakpoints.down('xs')]: {
+            '& div:first-child': {
+                width: '100%',
+            },
+        },
     },
 }));
 const createFileItem = (increment: number): FolderItem => ({
@@ -134,6 +126,7 @@ const createFileItem = (increment: number): FolderItem => ({
     name: 'PX Blue is Awesome.pdf',
     progress: 0,
     status: `Uploading (0%)`,
+    open: true,
 });
 
 let nextFileIndex = 0;
@@ -156,6 +149,10 @@ export const ProgressBar = (): JSX.Element => {
         if (status === 'Complete') {
             return;
         }
+        setFileUploadList((oldList) => oldList.map((item) => (item.id === id ? { ...item, open: false } : item)));
+    }, []);
+
+    const handleExited = useCallback((id: number) => {
         setFileUploadList((oldList) => oldList.filter((item) => item.id !== id));
     }, []);
 
@@ -163,7 +160,7 @@ export const ProgressBar = (): JSX.Element => {
         if (reason === 'clickaway') {
             return;
         }
-        setFileUploadList((oldList) => oldList.filter((item) => item.id !== id));
+        setFileUploadList((oldList) => oldList.map((item) => (item.id === id ? { ...item, open: false } : item)));
     }, []);
 
     useEffect(() => {
@@ -255,44 +252,38 @@ export const ProgressBar = (): JSX.Element => {
                 <List data-cy={'list-content'} disablePadding component="nav" className={classes.placementOfList}>
                     {fileUploadList.map(
                         (item, i): JSX.Element => (
-                            <div key={`itemKey${item.id}`} className={classes.infoList}>
+                            <div key={`itemKey${item.id}`} className={classes.fileUploadItem}>
                                 <Snackbar
-                                    classes={{ root: classes.snackbar }}
-                                    open={true}
+                                    classes={{
+                                        root: classes.snackbarRoot,
+                                        anchorOriginBottomCenter: classes.bottomCenter,
+                                    }}
+                                    open={item.open}
                                     autoHideDuration={item.progress === 100 ? 3000 : null}
                                     onClose={(e, reason): void => handleRequestClose(e, reason, item.id)}
+                                    TransitionProps={{ timeout: 300, onExited: (): void => handleExited(item.id) }}
                                 >
-                                    <SnackbarContent
-                                        classes={{ root: classes.SnackbarContent }}
-                                        action={
-                                            <>
-                                                <Button
-                                                    variant="outlined"
-                                                    className={classes.closeButtonContainer}
-                                                    onClick={(): void => removeListItem(item.id, item.status)}
-                                                >
-                                                    {item.progress === 100 ? 'View' : 'Cancel'}
-                                                </Button>
-                                            </>
-                                        }
-                                        message={
-                                            <div className={classes.messageContainer}>
-                                                <div className={classes.iconContainer}>
-                                                    <Description className={classes.icon} />
-                                                </div>
-                                                <div className={classes.messageTextContainer}>
-                                                    <Typography variant={'subtitle1'} color={'inherit'}>
-                                                        {item.name}
-                                                    </Typography>
-                                                    <Typography variant={'subtitle2'} className={classes.subTitle}>
-                                                        {item.status}
-                                                    </Typography>
-                                                </div>
-                                            </div>
-                                        }
-                                    />
+                                    <div>
+                                        <MuiThemeProvider theme={createTheme(PXBThemes.blueDark)}>
+                                            <InfoListItem
+                                                key={`infolist${item.id}`}
+                                                title={item.name}
+                                                subtitle={item.status}
+                                                icon={<Description />}
+                                                rightComponent={
+                                                    <Button
+                                                        variant="outlined"
+                                                        style={{ width: 80 }}
+                                                        onClick={(): void => removeListItem(item.id, item.status)}
+                                                    >
+                                                        {item.progress === 100 ? 'View' : 'Cancel'}
+                                                    </Button>
+                                                }
+                                            />
+                                            <LinearProgressWithLabel value={item.progress} key={`progress${i}`} />
+                                        </MuiThemeProvider>
+                                    </div>
                                 </Snackbar>
-                                <LinearProgressWithLabel value={item.progress} key={`progress${i}`} />
                             </div>
                         )
                     )}

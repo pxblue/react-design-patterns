@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         height: `calc(100vh - ${theme.spacing(8)}px)`,
         [theme.breakpoints.down('xs')]: {
             height: `calc(100vh - ${theme.spacing(7)}px)`,
+            padding: 0,
         },
     },
     toolbarGutters: {
