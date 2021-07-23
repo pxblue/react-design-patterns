@@ -2255,7 +2255,7 @@
     react-is "^16.8.0 || ^17.0.0"
     react-transition-group "^4.4.0"
 
-"@material-ui/icons@^4.5.1":
+"@material-ui/icons@^4.11.2":
   version "4.11.2"
   resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.11.2.tgz#b3a7353266519cd743b6461ae9fdfcb1b25eb4c5"
   integrity sha512-fQNsKX2TxBmqIGJCSi3tGTO/gZ+eJgWmMJkgDiOfyNaunNaxcklJQFaFogYcFl0qFuaEz1qaXYXboa/bUXVSOQ==
@@ -2513,10 +2513,10 @@
   resolved "https://registry.yarnpkg.com/@pxblue/prettier-config/-/prettier-config-1.0.2.tgz#fb00503df6557b66c3d91d43c9101e614c35d2ec"
   integrity sha512-/3cLBoTjZs3kV1ATPA/Sp0tsL7XmlV/b8HW/qt0jqR/uP5+cdXL2YIhMXQngLRa7PhpSkEiRIYK5sl0rKsXTUg==
 
-"@pxblue/react-components@^5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@pxblue/react-components/-/react-components-5.1.0.tgz#01b172814c583d4566fda15a9166c9344678ba18"
-  integrity sha512-Gtoisp81+zDncAz9fZ2dspJ0twWzSBIZ/CeXGlX/qf27cnZ2Yb+xJvr4HxVfdgY0svrnY2ArlY6/cyIdTv9uJg==
+"@pxblue/react-components@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@pxblue/react-components/-/react-components-5.3.0.tgz#47d04070c5e87d8852ee9bcbe29dfaaa632ce939"
+  integrity sha512-ZRrg8iLv3aeD7CZ4eVGxu8Wt/oSGOAWTkljpfMBPGqsmbSxoGNPJoTerHtz9OHxVHHCBZ6H0JhOsr8NdyfxlLQ==
   dependencies:
     "@pxblue/colors" "^3.0.0"
     color "^3.1.2"
